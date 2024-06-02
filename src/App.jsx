@@ -20,7 +20,8 @@ function App() {
       .catch(err => console.error(err))
   }, [despachar])
 
-  const { CreateMethod,
+  const {
+    CreateMethod,
     DeleteMethod,
     UpdateMethod,
     create,
@@ -47,7 +48,6 @@ function App() {
           </tr>
         </thead>
         <tbody>
-         
           {
             Selector.data.map(e => (
               <tr key={e.id}>
@@ -58,15 +58,13 @@ function App() {
                       <input value={edit.name}
                         onChange={(e) => setEdit({ ...edit, name: e.target.value })}
                         type="text" id="inputData" placeholder="Ingrese un dato" required />
-                      <button className='btn-delete'>Actualizar</button>
+                      <button onClick={UpdateMethod}  className='btn-delete'>Actualizar</button>
                     </td>
                   ) : (
                     <td>
-                      <b>{e.name}</b>
-                      <button onClick={UpdateMethod}
+                      <button onClick={()=> setEdit(e)}
                         className='btn-edit '
                         type="submit">Editar</button>
-
                       <button onClick={() => DeleteMethod(e.id)}
                         className='btn-delete'>Eliminar</button>
                     </td>
