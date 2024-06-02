@@ -1,0 +1,5 @@
+{
+    "watch": ["db.json"],
+    "ext": "json",
+    "exec": "pnpm dlx json-server -w db.json -p 3002"
+}
