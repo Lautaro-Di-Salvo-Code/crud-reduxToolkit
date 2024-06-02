@@ -13,8 +13,7 @@ const CrudMethods = createSlice({
         },
         MethodPut: (state, action) => {
             const { id, name } = action.payload
-            const filtroID = state.value.find(i => i.id === id)
-
+            const filtroID = state.data.find(i => i.id === id)
             filtroID.name = filtroID ? name : false
         },
         MethodDelete: (state, action) => {

@@ -1,14 +1,16 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { useEffect, useState } from 'react'
-import { MethodDelete, MethodGet, MethodPost, MethodPut } from './Slice/Slice2'
+import { useEffect } from 'react'
 import axios from 'axios'
 import './Components/style.css'
-// import {  FunctionMethods } from './MethodsCrud'
+import { FunctionsCrudMethods } from './MethodsCrud'
+import { MethodGet } from './Slice/Slice2'
 
 
 
 function App() {
   const despachar = useDispatch();
+  const Selector = useSelector(state => state.persons)
+  const api2 = "http://localhost:3002/names"
 
   useEffect(() => {
     axios.get(api2)
@@ -18,35 +20,13 @@ function App() {
       .catch(err => console.error(err))
   }, [despachar])
 
-  const Selector = useSelector(state => state.persons)
-  // console.log(Selector)
-
-  const [create, setCreate] = useState("")
-  // const [edit, setEdit] = useState(null)
-
-  const api2 = "http://localhost:3002/names"
-
-
-  const CreateMethod = () => {
-    if (create) {
-      const newPost = { id: Date.now(), name: create }
-      despachar(MethodPost(newPost))
-      axios
-        .post('http://localhost:3002/names/', newPost).then(() => setCreate(""))
-        .catch((err) => console.error(err));
-    }
-  }
-
-  const DeleteMethod = (id) => {
-    despachar(MethodDelete(id));
-    axios
-      .delete(`http://localhost:3002/names/${id}`)
-      .catch((err) => console.error(err));
-  };
-
-
-
-
+  const { CreateMethod,
+    DeleteMethod,
+    UpdateMethod,
+    create,
+    edit,
+    setCreate,
+    setEdit } = FunctionsCrudMethods()
 
   return (
     <>
@@ -55,7 +35,7 @@ function App() {
           onChange={(e) => setCreate(e.target.value)}
           type="text" id="inputData" placeholder="Ingrese un dato" required />
 
-        <button onClick={CreateMethod} type="submit">Submit</button>
+        <button onClick={CreateMethod} type="submit">Crear</button>
       </form>
 
       <table>
@@ -67,19 +47,32 @@ function App() {
           </tr>
         </thead>
         <tbody>
-
+         
           {
             Selector.data.map(e => (
-                <tr key={e.id}>
-                  <td>{e.name}</td>
-                  <td>
+              <tr key={e.id}>
+                <td>{e.name}</td>
+                {
+                  edit?.id === e.id ? (
+                    <td>
+                      <input value={edit.name}
+                        onChange={(e) => setEdit({ ...edit, name: e.target.value })}
+                        type="text" id="inputData" placeholder="Ingrese un dato" required />
+                      <button className='btn-delete'>Actualizar</button>
+                    </td>
+                  ) : (
+                    <td>
+                      <b>{e.name}</b>
+                      <button onClick={UpdateMethod}
+                        className='btn-edit '
+                        type="submit">Editar</button>
 
-                    <button onClick={() => DeleteMethod(e.id)}
-                      className='btn-edit'>Eliminar</button>
-
-                    <button className='btn-delete'>Editar</button>
-                  </td>
-                </tr>
+                      <button onClick={() => DeleteMethod(e.id)}
+                        className='btn-delete'>Eliminar</button>
+                    </td>
+                  )
+                }
+              </tr>
             ))
           }
         </tbody>
@@ -91,47 +84,3 @@ function App() {
 }
 
 export default App
-
-
-/*
-
-<table>
-    <caption>Ejemplo de Tabla Semánticamente Correcta</caption>
-    <thead>
-        <tr>
-            <th>Nombre</th>
-            <th>Edad</th>
-            <th>Ocupación</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>Juan Pérez</td>
-            <td>30</td>
-            <td>Ingeniero</td>
-        </tr>
-        <tr>
-            <td>Ana García</td>
-            <td>25</td>
-            <td>Doctora</td>
-        </tr>
-        <tr>
-            <td>María López</td>
-            <td>28</td>
-            <td>Abogada</td>
-        </tr>
-    </tbody>
-    <tfoot>
-        <tr>
-            <td colspan="3">Datos ficticios para ejemplo</td>
-        </tr>
-    </tfoot>
-</table>
-
-
-
-
-
-
-
-*/
