@@ -9,3 +9,7 @@ El slice:
 Las funciones: 
 
 ![image](https://github.com/user-attachments/assets/efbc626b-95f0-427f-8f90-137b40bfd16a)
+
+Estructura del componente: 
+
+![image](https://github.com/user-attachments/assets/f28608bb-8de0-4e9d-a1f5-3d7362a7b610)
